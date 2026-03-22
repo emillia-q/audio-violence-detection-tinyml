@@ -1,0 +1,18 @@
+# Data 
+data/
+
+# Virtual env
+venv/
+.env/
+
+# Pycache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Models
+models/*.pkl
