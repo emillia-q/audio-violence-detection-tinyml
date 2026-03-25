@@ -15,15 +15,19 @@ def process_audio_dataset(raw_dir: Union[str, Path], processed_dir: Union[str, P
     processed_root.mkdir(parents=True, exist_ok=True)
 
     # Iterate through subfolders
-    for category_dir in raw_root.iterdir():
+    for index, category_dir in enumerate(raw_root.iterdir()):
         if not category_dir.is_dir():
             continue
 
         # Create the corresponding folder in processed/
-        output_dir = processed_root / category_dir.name
+        processed_cat_name = f"{index}_{category_dir.name}"
+        output_dir = processed_root / processed_cat_name
         output_dir.mkdir(exist_ok=True)
 
-        for file_path in category_dir.iterdir():
+        # Recursively walk through nested subfolders (e.g. ambient/tv/*.wav)
+        for file_path in category_dir.rglob("*"):
+            if not file_path.is_file():
+                continue
             # Skip files that have already been processed
             check_file = output_dir / f"{file_path.name}_seg0.wav"
             if check_file.exists():
