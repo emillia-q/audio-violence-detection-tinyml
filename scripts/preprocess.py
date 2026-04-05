@@ -3,7 +3,7 @@ from typing import Union
 import librosa
 import soundfile as sf
 
-def process_audio_dataset(raw_dir: Union[str, Path], processed_dir: Union[str, Path], duration: int = 2, target_sr: int = 16000) ->None:
+def process_audio_dataset(raw_dir: Union[str, Path], processed_dir: Union[str, Path], duration: int = 2, step: int = 1, target_sr: int = 16000) ->None:
     """
     Processes raw audio files: resamples, normalizes and cuts into fragments.
     """
@@ -41,10 +41,13 @@ def process_audio_dataset(raw_dir: Union[str, Path], processed_dir: Union[str, P
 
                     # Calculate total samples for a fixed-size buffer
                     samples_per_segment = duration * target_sr
-                    num_segments = len(y) // samples_per_segment
+                    samples_per_step = step * target_sr
+
+                    # The +1 prevents getting 0 segments when the file length exactly matches the window size.
+                    num_segments = (len(y) - samples_per_segment) // samples_per_step + 1 
 
                     for i in range(num_segments):
-                        start = i * samples_per_segment
+                        start = i * samples_per_step
                         end = start + samples_per_segment
                         segment = y[start:end]
 
