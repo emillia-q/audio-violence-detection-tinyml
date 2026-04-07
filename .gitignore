@@ -21,4 +21,10 @@ __pycache__/
 Thumbs.db
 
 # Models
-models/*.pkl
+models/
+
+# Reports
+reports/
+
+# Helpers
+latest_version.txt
