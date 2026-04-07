@@ -26,7 +26,6 @@ models/
 # Reports
 reports/**/*
 # Do NOT ignore Markdown files inside reports subfolders
-!reports/**/
 !reports/**/*.md
 
 # Helpers
