@@ -24,7 +24,9 @@ Thumbs.db
 models/
 
 # Reports
-reports/
+reports/**/*
+# Do NOT ignore Markdown files inside reports subfolders
+!reports/**/*.md
 
 # Helpers
 latest_version.txt
