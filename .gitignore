@@ -26,9 +26,9 @@ Thumbs.db
 # Models
 models/
 
-# Reports
-reports/**/*
-# Do NOT ignore Markdown files inside reports subfolders
+# Reports (keep large artifacts ignored, but allow Markdown logs)
+reports/**
+!reports/**/
 !reports/**/*.md
 
 # Helpers
