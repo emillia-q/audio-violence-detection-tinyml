@@ -1,10 +1,11 @@
 # data/raw/violence
 
-Raw audio clips representing **violence-related events**.
+Raw audio clips representing **violence-related events** (target/positive class).
 
-## What to add (examples)
-- `destructive_events/`: destructive/impact-related sounds (breaking, damage).
-- `physical_impact/`: close-range physical impacts (non-speech violence).
-- `yell_female/`: female voice yelling/screaming.
-- `yell_male/`: male voice yelling/screaming.
-
+## Current subfolders
+- `raised_voices/` — loud/raised voices short of full yelling.
+- `scream/` — screams (panic, fear, pain).
+- `shattering_objects/` — glass/object breaking, destructive impacts.
+- `shout&verbal_aggression/` — shouting and verbally aggressive speech.
+- `yell_female/` — female voice yelling.
+- `yell_male/` — male voice yelling.
