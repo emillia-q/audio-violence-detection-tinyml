@@ -27,6 +27,9 @@ Thumbs.db
 # Models
 models/
 
+# ESP32 firmware (generated model_data.h)
+firmware/
+
 # Reports (keep large artifacts ignored, but allow Markdown logs)
 reports/**
 !reports/**/
