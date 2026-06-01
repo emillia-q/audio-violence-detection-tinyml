@@ -42,9 +42,7 @@ def process_audio_dataset(
             if file_path.suffix.lower() in [".wav", ".mp3", ".mp4", ".m4a", ".ogg"]:
                 try:
                     y, _sr = librosa.load(str(file_path), sr=target_sr)
-                    # Peak normalization ensures consistent amplitude across different recording devices
-                    y = librosa.util.normalize(y)
-
+        
                     # Calculate total samples for a fixed-size buffer
                     samples_per_segment = duration * target_sr
                     samples_per_step = step * target_sr
@@ -58,6 +56,9 @@ def process_audio_dataset(
                         start = i * samples_per_step
                         end = start + samples_per_segment
                         segment = y[start:end]
+
+                        # Peak normalization ensures consistent amplitude across different recording devices
+                        segment = librosa.util.normalize(segment)
 
                         out_filename = f"{file_path.name}_seg{i}.wav"
                         out_path = output_dir / out_filename
