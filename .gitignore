@@ -30,6 +30,9 @@ models/
 # ESP32 firmware (generated model_data.h)
 firmware/
 
+# Sanity check files
+sanity/
+
 # Reports (keep large artifacts ignored, but allow Markdown logs)
 reports/**
 !reports/**/

@@ -2,8 +2,15 @@ import librosa
 import numpy as np
 from pathlib import Path
 
-def _print_to_c(y: np.ndarray) -> None:
-    REPO_ROOT = Path(__file__).resolve().parent.parent
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+def _export_to_c_header(y: np.ndarray) -> None:
+    """
+    Exports the raw, unnormalized input audio signal into a C++ header file 
+    as a constant float array. This header serves as the 'golden_input' 
+    reference for on-device hardware DSP pipeline validation.
+    """
     OUTPUT_HEADER = REPO_ROOT / 'firmware' / 'golden_input.h'
     OUTPUT_HEADER.parent.mkdir(parents=True, exist_ok=True)
 
@@ -17,20 +24,30 @@ def _print_to_c(y: np.ndarray) -> None:
         f.write(",\n".join(lines))
         f.write("\n};\n")
 
-def extract_digital() -> None:        
-    filename = librosa.ex('trumpet')
-    target_sr = 16000
-    target_size = 32000
-    n_mfcc = 13
+def generate_sanity_references(filename: str, target_sr: int, target_size: int, n_mfcc: int) -> None: 
+    """
+    Loads a reference audio sample, exports it to a C++ header and generates 
+    baseline regression files (normalized audio and flattened MFCC features). 
+    These generated text files are used to verify the mathematical accuracy 
+    of the embedded DSP engine against the Librosa framework.
+    """       
+    filename = librosa.ex(filename)
 
     y, sr = librosa.load(filename, sr=target_sr, duration=2.0)
-    _print_to_c(y)
+    _export_to_c_header(y)
     y = librosa.util.fix_length(y, size=target_size)
     y = librosa.util.normalize(y)
+
+    # NORMALIZED
+    OUTPUT_NORMALIZED = REPO_ROOT / "sanity" / "golden_y_normalized.txt"
+    np.savetxt(OUTPUT_NORMALIZED, y, fmt="%.8f")
+
+    # MFCC computed
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
     ref = mfcc.T.flatten().astype(np.float32)  
-    print(ref)
-    print(f"y shape: {y.shape}, ref shape: {ref.shape}")
+    OUTPUT_MFCC = REPO_ROOT / "sanity" / "golden_mfcc_reference.txt"
+    np.savetxt(OUTPUT_MFCC, ref, fmt="%.8f")
+    
 
 if __name__ == "__main__":
-    extract_digital()
+    generate_sanity_references('trumpet', 16000, 32000, 13)
