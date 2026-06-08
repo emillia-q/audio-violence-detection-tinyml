@@ -5,10 +5,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 VERSION_FILE = REPO_ROOT / "latest_version_tflite.txt"
 MODEL_BASE_DIR = REPO_ROOT / "models" / "tflite"
-OUTPUT_HEADER = REPO_ROOT / "firmware" / "model_data.h"
 
 version = VERSION_FILE.read_text(encoding="utf-8").strip()
 model_path = MODEL_BASE_DIR / version / "audio_detection_model.tflite"
+OUTPUT_HEADER = REPO_ROOT / "firmware" / version / "model_data.h"
 
 if not model_path.is_file():
     raise FileNotFoundError(
